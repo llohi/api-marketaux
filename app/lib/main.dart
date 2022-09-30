@@ -1,5 +1,9 @@
+import 'package:app/profile_tab.dart';
+import 'package:app/saved_tab.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'home_tab.dart';
 
 void main() {
   runApp(const App());
@@ -35,41 +39,42 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  @override
   Widget _buildIosHomePage(BuildContext context) {
     return CupertinoTabScaffold(
       tabBar: CupertinoTabBar(
         items: const [
           BottomNavigationBarItem(
-            label: "Title",
-            icon: Icon(CupertinoIcons.check_mark),
+            label: HomeTab.title,
+            icon: HomeTab.iosIcon,
           ),
           BottomNavigationBarItem(
-            label: "Title",
-            icon: Icon(CupertinoIcons.check_mark),
+            label: SavedTab.title,
+            icon: SavedTab.iosIcon,
           ),
           BottomNavigationBarItem(
-            label: "Title",
-            icon: Icon(CupertinoIcons.check_mark),
+            label: ProfileTab.title,
+            icon: ProfileTab.iosIcon,
           ),
         ],
       ),
-      // TODO : add create tabs
       tabBuilder: ((context, index) {
         switch (index) {
           case 0:
-            return const CupertinoTabView(
-              defaultTitle: "First",
+            return CupertinoTabView(
+              defaultTitle: HomeTab.title,
+              builder: (context) => const HomeTab(),
             );
 
           case 1:
-            return const CupertinoTabView(
-              defaultTitle: "Second",
+            return CupertinoTabView(
+              defaultTitle: SavedTab.title,
+              builder: (context) => const SavedTab(),
             );
 
           case 2:
-            return const CupertinoTabView(
-              defaultTitle: "Third",
+            return CupertinoTabView(
+              defaultTitle: ProfileTab.title,
+              builder: (context) => const ProfileTab(),
             );
 
           default:
