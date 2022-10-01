@@ -1,5 +1,9 @@
+import 'dart:convert';
+
+import 'package:app/news_article.dart';
 import 'package:app/news_card.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:http/http.dart' as http;
 
 class HomeTab extends StatefulWidget {
   static const title = "Home";
@@ -12,7 +16,7 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
-  static const dummyData = [
+  var dummyData = [
     {
       "title":
           "Tesla Hosted Its Second A.I. Day. This Time, a Robot Really Danced.",
@@ -38,14 +42,40 @@ class _HomeTabState extends State<HomeTab> {
     },
   ];
 
+  late Future<NewsArticle> newsArticle;
+
+  @override
+  void initState() {
+    super.initState();
+    newsArticle = fetchData();
+  }
+
   Widget _buildBody(BuildContext context) {
+    return FutureBuilder<NewsArticle>(
+      builder: ((context, snapshot) {
+        if (snapshot.hasData) {
+          return NewsCard(
+            title: snapshot.data!.title,
+            description: snapshot.data!.description,
+            imageURL: snapshot.data!.imageURL,
+          );
+        } else {
+          return NewsCard(
+            title: "error",
+            description: "",
+            imageURL: "https://images.barrons.com/im-634613/social",
+          );
+        }
+      }),
+    );
+    /*
     return ListView.builder(
       itemCount: dummyData.length,
       itemBuilder: (context, index) => NewsCard(
           title: dummyData[index]["title"] as String,
           description: dummyData[index]["description"] as String,
           imageURL: dummyData[index]["imageURL"] as String),
-    );
+    );*/
   }
 
   @override
@@ -54,5 +84,16 @@ class _HomeTabState extends State<HomeTab> {
       navigationBar: const CupertinoNavigationBar(),
       child: _buildBody(context),
     );
+  }
+
+  Future<NewsArticle> fetchData() async {
+    final response = await http.get(Uri.parse(
+        "https://api.marketaux.com/v1/news/all?symbols=TSLA%2CAMZN%2CMSFT&filter_entities=true&language=en&api_token=zDfQjGP8ZBk6SCxQjM8LghePU2vzvpPYHGmd6Hr2"));
+
+    if (response.statusCode == 200) {
+      return NewsArticle.fromJson(jsonDecode(response.body));
+    } else {
+      throw Exception("Failed to load news article");
+    }
   }
 }
