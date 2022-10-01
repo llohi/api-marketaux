@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 
-class SavedTab extends StatelessWidget {
+class StatTab extends StatelessWidget {
   static const title = "Saved Articles";
   static const iosIcon = Icon(CupertinoIcons.download_circle);
 
-  const SavedTab({super.key});
+  const StatTab({super.key});
 
   Widget _buildBody(BuildContext context) {
     return Column();
