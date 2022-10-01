@@ -12,31 +12,39 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
+  static const dummyData = [
+    {
+      "title":
+          "Tesla Hosted Its Second A.I. Day. This Time, a Robot Really Danced.",
+      "description":
+          "Tesla provided investors with updates about its autonomous driving efforts and a labor-saving humanoid robot on Friday. Investors have other concerns.",
+      "imageURL": "https://images.barrons.com/im-634613/social"
+    },
+    {
+      "title":
+          "Sawtooth Solutions LLC Increases Position in Stryker Co. (NYSE:SYK)",
+      "description":
+          "Read Sawtooth Solutions LLC Increases Position in Stryker Co. (NYSE:SYK) at ETF Daily News",
+      "imageURL":
+          "https://www.americanbankingnews.com/wp-content/timthumb/timthumb.php?src=https://www.marketbeat.com/logos/stryker-logo.png&w=240&h=240&zc=2"
+    },
+    {
+      "title":
+          "Money Concepts Capital Corp Sells 33,456 Shares of Innovator S&P 500 Ultra Buffer ETF – September (NYSEARCA:USEP)",
+      "description":
+          "Read Money Concepts Capital Corp Sells 33,456 Shares of Innovator S&P 500 Ultra Buffer ETF – September (NYSEARCA:USEP) at ETF Daily News",
+      "imageURL":
+          "https://www.americanbankingnews.com/wp-content/timthumb/timthumb.php?src=https://www.marketbeat.com/logos/generic-stocks8.jpg&w=240&h=240&zc=2"
+    },
+  ];
+
   Widget _buildBody(BuildContext context) {
-    return ListView(
-      children: const [
-        NewsCard(
-          title: "Title 1",
-          description:
-              "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-          imageURL:
-              "https://www.americanbankingnews.com/wp-content/timthumb/timthumb.php?src=https://www.marketbeat.com/logos/microsoft-corporation-logo.png&w=240&h=240&zc=2",
-        ),
-        NewsCard(
-          title: "Title 2",
-          description:
-              "It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.",
-          imageURL:
-              "https://www.americanbankingnews.com/wp-content/timthumb/timthumb.php?src=https://www.marketbeat.com/logos/amazoncom-inc-logo.jpg&w=240&h=240&zc=2",
-        ),
-        NewsCard(
-          title: "Title 3",
-          description:
-              "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-          imageURL:
-              "https://cdn.benzinga.com/files/imagecache/og_image_social_share_1200x630/images/story/2012/investing.jpg",
-        ),
-      ],
+    return ListView.builder(
+      itemCount: dummyData.length,
+      itemBuilder: (context, index) => NewsCard(
+          title: dummyData[index]["title"] as String,
+          description: dummyData[index]["description"] as String,
+          imageURL: dummyData[index]["imageURL"] as String),
     );
   }
 
