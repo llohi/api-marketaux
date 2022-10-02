@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:app/news_article.dart';
 import 'package:app/news_card.dart';
+import 'package:app/server_request.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class HomeTab extends StatefulWidget {
@@ -42,30 +44,36 @@ class _HomeTabState extends State<HomeTab> {
     },
   ];
 
-  late Future<NewsArticle> newsArticle;
+  late Future<Response> apiResponse;
 
   @override
   void initState() {
     super.initState();
-    newsArticle = fetchData();
+    apiResponse = ServerRequest().fetchData();
   }
 
   Widget _buildBody(BuildContext context) {
-    return FutureBuilder<NewsArticle>(
+    return FutureBuilder<Response>(
+      future: apiResponse,
       builder: ((context, snapshot) {
         if (snapshot.hasData) {
-          return NewsCard(
-            title: snapshot.data!.title,
-            description: snapshot.data!.description,
-            imageURL: snapshot.data!.imageURL,
+          return ListView.builder(
+            itemCount: snapshot.data!.data.length,
+            itemBuilder: (context, index) => NewsCard(
+              title: snapshot.data!.data[index]['title'],
+              description: snapshot.data!.data[index]['description'],
+              imageURL: snapshot.data!.data[index]['image_url'],
+            ),
           );
-        } else {
-          return NewsCard(
-            title: "error",
-            description: "",
+        } else if (snapshot.hasError) {
+          print(snapshot.error);
+          return const NewsCard(
+            title: "Error",
+            description: "The api request failed for some reason",
             imageURL: "https://images.barrons.com/im-634613/social",
           );
         }
+        return const CircularProgressIndicator();
       }),
     );
     /*
@@ -84,16 +92,5 @@ class _HomeTabState extends State<HomeTab> {
       navigationBar: const CupertinoNavigationBar(),
       child: _buildBody(context),
     );
-  }
-
-  Future<NewsArticle> fetchData() async {
-    final response = await http.get(Uri.parse(
-        "https://api.marketaux.com/v1/news/all?symbols=TSLA%2CAMZN%2CMSFT&filter_entities=true&language=en&api_token=zDfQjGP8ZBk6SCxQjM8LghePU2vzvpPYHGmd6Hr2"));
-
-    if (response.statusCode == 200) {
-      return NewsArticle.fromJson(jsonDecode(response.body));
-    } else {
-      throw Exception("Failed to load news article");
-    }
   }
 }

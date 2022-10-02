@@ -18,8 +18,6 @@ class NewsCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           Image(
-            width: 200,
-            height: 100,
             image: NetworkImage(imageURL),
           ),
           ListTile(
