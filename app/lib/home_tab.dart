@@ -37,7 +37,8 @@ class _HomeTabState extends State<HomeTab> {
               articles.add(NewsCard(
                 title: entry['title'],
                 description: entry['description'],
-                imageURL: entry['image'],
+                image: entry['image'],
+                url: entry['url'],
               ));
             }
           }
@@ -50,7 +51,8 @@ class _HomeTabState extends State<HomeTab> {
           return const NewsCard(
             title: "Error",
             description: "The api request failed for some reason",
-            imageURL: "https://images.barrons.com/im-634613/social",
+            image: "https://images.barrons.com/im-634613/social",
+            url: "",
           );
         }
         return const CircularProgressIndicator();
