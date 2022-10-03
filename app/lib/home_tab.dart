@@ -24,39 +24,42 @@ class _HomeTabState extends State<HomeTab> {
 
   /// Build a ListView based on the response from the API.
   Widget _buildBody(BuildContext context) {
-    return FutureBuilder<Response>(
-      future: apiResponse,
-      builder: ((context, snapshot) {
-        if (snapshot.hasData) {
-          List<NewsCard> articles = [];
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: FutureBuilder<Response>(
+        future: apiResponse,
+        builder: ((context, snapshot) {
+          if (snapshot.hasData) {
+            List<NewsCard> articles = [];
 
-          // Sort out news articles without image covers
-          for (int i = 0; i < snapshot.data!.data.length; i++) {
-            Map entry = snapshot.data!.data[i];
-            if (entry['image'] != null) {
-              articles.add(NewsCard(
-                title: entry['title'],
-                description: entry['description'],
-                image: entry['image'],
-                url: entry['url'],
-              ));
+            // Sort out news articles without image covers
+            for (int i = 0; i < snapshot.data!.data.length; i++) {
+              Map entry = snapshot.data!.data[i];
+              if (entry['image'] != null) {
+                articles.add(NewsCard(
+                  title: entry['title'],
+                  description: entry['description'],
+                  image: entry['image'],
+                  url: entry['url'],
+                ));
+              }
             }
+            // Build the ListView
+            return ListView.builder(
+              itemCount: articles.length,
+              itemBuilder: (context, index) => articles[index],
+            );
+          } else if (snapshot.hasError) {
+            return const NewsCard(
+              title: "Error",
+              description: "The api request failed for some reason",
+              image: "https://images.barrons.com/im-634613/social",
+              url: "",
+            );
           }
-          // Build the ListView
-          return ListView.builder(
-            itemCount: articles.length,
-            itemBuilder: (context, index) => articles[index],
-          );
-        } else if (snapshot.hasError) {
-          return const NewsCard(
-            title: "Error",
-            description: "The api request failed for some reason",
-            image: "https://images.barrons.com/im-634613/social",
-            url: "",
-          );
-        }
-        return const CircularProgressIndicator();
-      }),
+          return const CircularProgressIndicator();
+        }),
+      ),
     );
   }
 

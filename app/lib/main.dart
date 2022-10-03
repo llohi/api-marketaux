@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'home_tab.dart';
-import 'stat_tab.dart';
+import 'saved_tab.dart';
 import 'profile_tab.dart';
 
 void main() {
@@ -41,8 +41,8 @@ class _HomePageState extends State<HomePage> {
             icon: HomeTab.iosIcon,
           ),
           BottomNavigationBarItem(
-            label: StatTab.title,
-            icon: StatTab.iosIcon,
+            label: SavedTab.title,
+            icon: SavedTab.iosIcon,
           ),
           BottomNavigationBarItem(
             label: ProfileTab.title,
@@ -60,8 +60,8 @@ class _HomePageState extends State<HomePage> {
 
           case 1:
             return CupertinoTabView(
-              defaultTitle: StatTab.title,
-              builder: (context) => const StatTab(),
+              defaultTitle: SavedTab.title,
+              builder: (context) => const SavedTab(),
             );
 
           case 2:
