@@ -1,12 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 import 'home_tab.dart';
 import 'saved_tab.dart';
 import 'profile_tab.dart';
 
-void main() {
+Future<void> main() async {
   runApp(const App());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 class App extends StatelessWidget {
