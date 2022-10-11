@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -33,6 +34,10 @@ class NewsCard extends StatelessWidget {
             onPressed: _launchUrl,
             child: const Text("Read article"),
           ),
+          TextButton(
+            onPressed: _saveArticle,
+            child: const Text("Save article"),
+          ),
         ],
       ),
     );
@@ -47,5 +52,15 @@ class NewsCard extends StatelessWidget {
     if (!await launchUrl(Uri.parse(url))) {
       throw 'Could not launch $url';
     }
+  }
+
+  // todo: write to cloud firestore
+  Future<void> _saveArticle() async {
+    await FirebaseFirestore.instance.collection("articles").add({
+      "title": title,
+      "description": description,
+      "image": image,
+      "url": url,
+    });
   }
 }
